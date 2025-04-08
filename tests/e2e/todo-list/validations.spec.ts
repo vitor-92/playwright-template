@@ -17,14 +17,13 @@ test.describe('Playwright Demo', () => {
 
     test('should mark a task as completed', async () => {
         await todoPage.addTodo('Task 1');
-        await todoPage.toggleTodo(0);
+        await todoPage.toggleTodoByText('Task 1');
         const todo = todoPage.locators.todoItems.nth(0);
         await expect(todo).toHaveClass('completed');
     });
 
     test('should edit an existing task', async () => {
         await todoPage.addTodo('Old task');
-        // await todoPage.editTodo(0, 'Updated task');
         await todoPage.editTodoByText('Old task', 'Updated task')
         const todos = await todoPage.getTodosText();
         expect(todos).toContain('Updated task');
@@ -41,7 +40,8 @@ test.describe('Playwright Demo', () => {
     test('should filter active tasks', async () => {
         await todoPage.addTodo('Active task');
         await todoPage.addTodo('Completed task');
-        await todoPage.toggleTodo(1);
+        // await todoPage.toggleTodo(1);
+        await todoPage.toggleTodoByText('Completed task');
 
         await todoPage.filterBy('Active');
         const todos = await todoPage.getTodosText();
