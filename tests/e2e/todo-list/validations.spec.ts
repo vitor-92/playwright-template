@@ -31,7 +31,6 @@ test.describe('Playwright Demo', () => {
 
     test('should delete a task', async () => {
         await todoPage.addTodo('Task to delete');
-        // await todoPage.deleteTodo(0);
         await todoPage.deleteTodoByText('Task to delete');
         const todos = await todoPage.getTodosText();
         expect(todos).not.toContain('Task to delete');
