@@ -9,27 +9,27 @@ test.describe('Playwright Demo', () => {
         await todoPage.goto();
     });
 
-    test('should add a new task', async () => {
+    test('should add a new task > @smoke', async () => {
         await todoPage.addTodo('Playwright Demo');
         const todos = await todoPage.getTodosText();
         expect(todos).toContain('Playwright Demo');
     });
 
-    test('should mark a task as completed', async () => {
+    test('should mark a task as completed > @smoke', async () => {
         await todoPage.addTodo('Task 1');
         await todoPage.toggleTodoByText('Task 1');
         const todo = todoPage.locators.todoItems.nth(0);
         await expect(todo).toHaveClass('completed');
     });
 
-    test('should edit an existing task', async () => {
+    test('should edit an existing task > @smoke', async () => {
         await todoPage.addTodo('Old task');
         await todoPage.editTodoByText('Old task', 'Updated task')
         const todos = await todoPage.getTodosText();
         expect(todos).toContain('Updated task');
     });
 
-    test('should delete a task', async () => {
+    test('should delete a task > @smoke', async () => {
         await todoPage.addTodo('Task to delete');
         await todoPage.deleteTodoByText('Task to delete');
         const todos = await todoPage.getTodosText();
@@ -51,7 +51,7 @@ test.describe('Playwright Demo', () => {
     test('should filter completed tasks', async () => {
         await todoPage.addTodo('Active task');
         await todoPage.addTodo('Completed task');
-        await todoPage.toggleTodo(1);
+        await todoPage.toggleTodoByText('Completed task');
 
         await todoPage.filterBy('Completed');
         const todos = await todoPage.getTodosText();

@@ -6,24 +6,29 @@ export type TodoLocators = {
     todoInput: Locator;
     todoItems: Locator;
     filters: Record<FilterName, Locator>;
-    toggleAt: (index: number) => Locator;
-    destroyAt: (index: number) => Locator;
-    editAt: (index: number) => Locator;
+    getItemByText: (text: string) => Locator;
+    toggleByText: (text: string) => Locator;
+    destroyByText: (text: string) => Locator;
+    editByText: (text: string) => Locator;
 };
 
 export function getTodoLocators(page: Page): TodoLocators {
-    const filterNames: FilterName[] = ['All', 'Active', 'Completed'];
-
-    const filters: Record<FilterName, Locator> = Object.fromEntries(
-        filterNames.map((name) => [name, page.getByRole('link', { name })])
-    ) as Record<FilterName, Locator>;
+    const getItemByText = (text: string) =>
+        page.locator('.todo-list li').filter({ hasText: text });
 
     return {
         todoInput: page.locator('.new-todo'),
         todoItems: page.locator('.todo-list li'),
-        filters,
-        toggleAt: (index) => page.locator('.todo-list li').nth(index).locator('.toggle'),
-        destroyAt: (index) => page.locator('.todo-list li').nth(index).locator('.destroy'),
-        editAt: (index) => page.locator('.todo-list li').nth(index).locator('.edit'),
+
+        filters: {
+            All: page.getByRole('link', { name: 'All' }),
+            Active: page.getByRole('link', { name: 'Active' }),
+            Completed: page.getByRole('link', { name: 'Completed' }),
+        },
+
+        getItemByText,
+        toggleByText: (text: string) => getItemByText(text).locator('.toggle'),
+        destroyByText: (text: string) => getItemByText(text).locator('.destroy'),
+        editByText: (text: string) => getItemByText(text).locator('.edit'),
     };
 }

@@ -1,6 +1,5 @@
 import { Page } from '@playwright/test';
-import { FilterName, getTodoLocators, TodoLocators } from '../todo-list/locators';
-
+import { getTodoLocators, TodoLocators, FilterName } from '../todo-list/locators';
 
 export class PageTodo {
     readonly page: Page;
@@ -24,39 +23,20 @@ export class PageTodo {
         return await this.locators.todoItems.allTextContents();
     }
 
-    async toggleTodo(index: number) {
-        await this.locators.toggleAt(index).click();
-    }
-
     async toggleTodoByText(taskText: string) {
-        const item = this.locators.todoItems.filter({ hasText: taskText }).first();
-        await item.locator('.toggle').click();
-    }
-
-
-    async deleteTodo(index: number) {
-        const item = this.locators.todoItems.nth(index);
-        await item.hover();
-        await this.locators.destroyAt(index).click();
+        await this.locators.toggleByText(taskText).click();
     }
 
     async deleteTodoByText(taskText: string) {
-        const item = this.locators.todoItems.filter({ hasText: taskText }).first();
+        const item = this.locators.getItemByText(taskText);
         await item.hover();
-        await item.locator('.destroy').click();
-    }
-
-    async editTodo(index: number, newText: string) {
-        await this.locators.todoItems.nth(index).dblclick();
-        const input = this.locators.editAt(index);
-        await input.fill(newText);
-        await input.press('Enter');
+        await this.locators.destroyByText(taskText).click();
     }
 
     async editTodoByText(taskText: string, newText: string) {
-        const item = this.locators.todoItems.filter({ hasText: taskText }).first();
+        const item = this.locators.getItemByText(taskText);
         await item.dblclick();
-        const input = item.locator('.edit');
+        const input = this.locators.editByText(taskText);
         await input.fill(newText);
         await input.press('Enter');
     }
