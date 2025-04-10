@@ -12,7 +12,7 @@ test.describe('Playwright Demo', () => {
     test('should add a new task > @smoke', async () => {
         await todoPage.addTodo('Playwright Demo');
         const todos = await todoPage.getTodosText();
-        expect(todos).toContain('Playwright Demo');
+        expect(todos).toEqual(['Playwright Demo']);
     });
 
     test('should mark a task as completed > @smoke', async () => {
@@ -26,7 +26,7 @@ test.describe('Playwright Demo', () => {
         await todoPage.addTodo('Old task');
         await todoPage.editTodoByText('Old task', 'Updated task')
         const todos = await todoPage.getTodosText();
-        expect(todos).toContain('Updated task');
+        expect(todos).toEqual(['Updated task']);
     });
 
     test('should delete a task > @smoke', async () => {
